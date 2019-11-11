@@ -1,0 +1,15 @@
+body {
+  font-family: Verdana, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  user-select: none;
+  /* fix zoom for apple */
+  overflow: hidden;
+  /* colors */
+  --alert-color: #FC9F5C;
+
+  .hey {
+
+  }
+}

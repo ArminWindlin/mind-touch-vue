@@ -1,6 +1,6 @@
 <template>
     <div class="game">
-        <view-canvas></view-canvas>
+        <view-canvas :character1="character1" ref="view"></view-canvas>
     </div>
 </template>
 
@@ -12,32 +12,63 @@
     props: [],
     components: {ViewCanvas},
     data() {
-      return {};
+      return {
+        character1: {
+          x: 0,
+          y: 0,
+          exactX: 0,
+          exactY: 0,
+        },
+      };
     },
     methods: {
-      keyBoardListener() {
-        document.addEventListener('keydown', function(event) {
-          // LEFT
-          if (event.keyCode === 37) {
-            console.log('cmon');
-          }
-          // UP
-          else if (event.keyCode === 38) {
-            console.log('cmon');
-          }
-          // RIGHT
-          else if (event.keyCode === 39) {
-            console.log('cmon');
-          }
-          // DOWN
-          else if (event.keyCode === 40) {
-            console.log('cmon');
-          }
-        });
+      processKeyPress(keyCode) {
+        let animationWidth = this.$refs.view.rectSize;
+        let counter = 0;
+        let move = {
+          left: false,
+          up: false,
+          right: false,
+          down: false,
+        };
+        // LEFT
+        if (keyCode === 37) {
+          move.left = true;
+        }
+        // UP
+        else if (keyCode === 38) {
+          move.up = true;
+        }
+        // RIGHT
+        else if (keyCode === 39) {
+          move.right = true;
+        }
+        // DOWN
+        else if (keyCode === 40) {
+          move.down = true;
+        }
+
+        // move
+        this.character1.x++;
+        let speed1 = 2;
+        let interval = setInterval(() => {
+          if (move.right) this.character1.exactX += speed1;
+          if (move.left) this.character1.exactX -= speed1;
+          if (move.up) this.character1.exactY -= speed1;
+          if (move.down) this.character1.exactY += speed1;
+          counter += speed1;
+          if (counter >= animationWidth) clearInterval(interval);
+        }, 10);
       },
     },
     beforeMount() {
-      this.keyBoardListener();
+    },
+    mounted() {
+      // key listener
+      let self = this;
+      document.addEventListener('keydown', function(event) {
+        self.processKeyPress(event.keyCode);
+      });
     },
   };
 </script>

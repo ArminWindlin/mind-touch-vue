@@ -7,7 +7,7 @@
 <script>
   export default {
     name: 'view-canvas',
-    props: [],
+    props: ['character1'],
     data() {
       return {
         gameWidth: 640,
@@ -19,6 +19,7 @@
         fps: 0,
         frameCount: 0,
         animationTestNumber: 0,
+        rectSize: 0,
       };
     },
     methods: {
@@ -31,18 +32,25 @@
         //ctx.strokeRect(0, 0, this.gameWidth, this.gameHeight);
 
         ctx.fillStyle = 'rgba(0, 0, 255, 1)';
-        ctx.fillRect(10, 10, 100 + this.animationTestNumber, 100);
+        //ctx.fillRect(10, 10, 100 + this.animationTestNumber, 100);
 
         ctx.font = 'bold 18px Verdana';
         ctx.textAlign = 'center';
 
         ctx.fillText(this.fps + ' FPS', this.gameWidth - 80, 20);
 
+        // get responsive rectangle size
+        this.rectSize = Math.floor(this.gameWidth / 14);
+        let rectSize = this.rectSize;
+
+        // draw character 1
+        ctx.fillStyle = 'rgb(0, 0, 255)';
+        ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
+
         // grid
-        let rectSize = Math.floor(this.gameWidth / 14);
         for (let i = 0; i < 14; i++) {
           for (let j = 0; j < 7; j++) {
-            ctx.fillStyle = 'rgba(0, 0, 0, o0.8)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
             ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
           }
         }

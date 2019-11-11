@@ -1,16 +1,29 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
+import VueRouter from 'vue-router';
 import PrivacyPolicy from './components/subpages/PrivacyPolicy.vue';
 import HelloWorld from './components/HelloWorld.vue';
 import Game from './components/Game.vue';
-import VueRouter from 'vue-router';
 
 import './global.scss';
 import './reset.scss';
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
 
 Vue.config.productionTip = false;
-Vue.use(VueRouter);
+
+// VueX
+const store = new Vuex.Store({
+  state: {
+    unitSize: 40,
+  },
+  mutations: {
+    increment(state) {
+      state.count++;
+    },
+  },
+});
 
 const router = new VueRouter({
   mode: 'history',

@@ -19,48 +19,55 @@
                     exactX: 0,
                     exactY: 0,
                 },
+                moveLock: false,
+                nextMove: '',
             };
         },
         methods: {
             processKeyPress(keyCode) {
+                let move = '';
+                // LEFT
+                if (keyCode === 37) move = 'left';
+                // UP
+                else if (keyCode === 38) move = 'up';
+                // RIGHT
+                else if (keyCode === 39) move = 'right';
+
+                // DOWN
+                else if (keyCode === 40) move = 'down';
+
+                if (move !== '') this.move(move);
+
+            },
+            move(move) {
+                if (this.moveLock) return this.nextMove = move;
+                this.moveLock = true;
+
+                if (move === 'right') this.character1.x++;
+                if (move === 'up') this.character1.y--;
+                if (move === 'down') this.character1.y++;
+
                 let animationWidth = this.$refs.view.rectSize;
                 let counter = 0;
-                let move = {
-                    left: false,
-                    up: false,
-                    right: false,
-                    down: false,
-                };
-                // LEFT
-                if (keyCode === 37) {
-                    move.left = true;
-                }
-                // UP
-                else if (keyCode === 38) {
-                    move.up = true;
-                }
-                // RIGHT
-                else if (keyCode === 39) {
-                    move.right = true;
-                }
-                // DOWN
-                else if (keyCode === 40) {
-                    move.down = true;
-                }
+                let speed1 = 4;
+                if (move === 'left') this.character1.x--;
 
-                // move
-                this.character1.x++;
-                let speed1 = 2;
                 let interval = setInterval(() => {
-                    if (move.right) this.character1.exactX += speed1;
-                    if (move.left) this.character1.exactX -= speed1;
-                    if (move.up) this.character1.exactY -= speed1;
-                    if (move.down) this.character1.exactY += speed1;
+                    if (move === 'right') this.character1.exactX += speed1;
+                    if (move === 'left') this.character1.exactX -= speed1;
+                    if (move === 'up') this.character1.exactY -= speed1;
+                    if (move === 'down') this.character1.exactY += speed1;
                     counter += speed1;
                     if (counter >= animationWidth) {
                         clearInterval(interval);
+                        this.character1.exactX = this.$refs.view.rectSize * this.character1.x;
+                        this.character1.exactY = this.$refs.view.rectSize * this.character1.y;
+                        this.moveLock = false;
+                        if (this.nextMove !== '') {
+                            this.move(this.nextMove);
+                            this.nextMove = '';
+                        }
                     }
-                    ;
                 }, 10);
             },
         },

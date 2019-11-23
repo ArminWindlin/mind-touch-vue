@@ -4,16 +4,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'template',
-    props: [],
-    data() {
-      return {};
-    },
-    methods: {},
-    beforeMount() {
-    },
-  };
+    export default {
+        name: 'template',
+        props: [],
+        data() {
+            return {};
+        },
+        methods: {},
+        beforeMount() {
+        },
+    };
 </script>
 
 <style scoped>

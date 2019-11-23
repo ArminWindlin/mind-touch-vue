@@ -1,16 +1,18 @@
 <template>
   <div class="game">
     <view-canvas :character1="character1" ref="view"></view-canvas>
+    <navigation-view @move="move"></navigation-view>
   </div>
 </template>
 
 <script>
     import ViewCanvas from './View.vue';
+    import NavigationView from './NavigationView.vue';
 
     export default {
         name: 'game',
         props: [],
-        components: {ViewCanvas},
+        components: {ViewCanvas, NavigationView},
         data() {
             return {
                 character1: {

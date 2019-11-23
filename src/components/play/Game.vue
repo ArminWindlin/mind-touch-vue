@@ -8,7 +8,7 @@
 <script>
     import ViewCanvas from './View.vue';
     import NavigationView from './NavigationView.vue';
-    import {levels} from './data/levels';
+    import {levels} from '../data/levels';
 
     export default {
 

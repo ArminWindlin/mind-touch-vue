@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <view-canvas :character1="character1" ref="view"></view-canvas>
+    <view-canvas :character1="character1" :grid="grid" ref="view"></view-canvas>
     <navigation-view @move="move"></navigation-view>
   </div>
 </template>
@@ -8,8 +8,10 @@
 <script>
     import ViewCanvas from './View.vue';
     import NavigationView from './NavigationView.vue';
+    import {levels} from './data/levels';
 
     export default {
+
         name: 'game',
         props: [],
         components: {ViewCanvas, NavigationView},
@@ -23,6 +25,7 @@
                 },
                 moveLock: false,
                 nextMove: '',
+                grid: [],
             };
         },
         methods: {
@@ -81,6 +84,8 @@
             document.addEventListener('keydown', function(event) {
                 self.processKeyPress(event.keyCode);
             });
+
+            this.grid = levels[1].grid;
         },
     };
 </script>

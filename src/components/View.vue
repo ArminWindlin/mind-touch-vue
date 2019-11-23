@@ -7,7 +7,7 @@
 <script>
     export default {
         name: 'view-canvas',
-        props: ['character1'],
+        props: ['character1', 'grid'],
         data() {
             return {
                 gameWidth: 640,
@@ -52,6 +52,7 @@
                     for (let j = 0; j < 7; j++) {
                         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                         ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        if(this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }
 

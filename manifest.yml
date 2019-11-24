@@ -1,0 +1,9 @@
+---
+applications:
+- name: mindtouch
+  memory: 64MB
+  routes:
+  - route: mindtouch.scapp.io
+  instances: 1
+  env:
+    NODE_ENV: production

@@ -30,8 +30,7 @@ const router = new VueRouter({
     mode: 'history',
     base: __dirname,
     routes: [
-        {path: '/', component: Game},
-        {path: '/test', component: App},
+        {path: '/', component: App},
         {path: '/privacy', component: PrivacyPolicy},
         {path: '/hello', component: HelloWorld},
     ],

@@ -1,15 +1,29 @@
 <template>
   <div id="app">
-    <menuu></menuu>
+    <menuu v-if="menuC" @play="play()"></menuu>
+    <game v-if="gameC"></game>
   </div>
 </template>
 
 <script>
     import Menuu from './components/Menu.vue';
+    import Game from './components/play/Game.vue';
 
     export default {
         name: 'app',
-        components: {Menuu},
+        components: {Menuu, Game},
+        data() {
+            return {
+                menuC: true,
+                gameC: false,
+            };
+        },
+        methods: {
+            play() {
+                this.menuC = false;
+                this.gameC = true;
+            },
+        },
     };
 </script>
 

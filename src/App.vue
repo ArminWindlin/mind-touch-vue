@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <menuu v-if="menuC" @play="play()"></menuu>
-    <game v-if="gameC"></game>
+    <game v-if="gameC" @toMenu="menuC = true; gameC = false"></game>
   </div>
 </template>
 

@@ -37,9 +37,10 @@
                 else if (keyCode === 38) move = 'up';
                 // RIGHT
                 else if (keyCode === 39) move = 'right';
-
                 // DOWN
                 else if (keyCode === 40) move = 'down';
+                // ESC
+                else if (keyCode === 27) this.$emit('toMenu');
 
                 if (move !== '') this.move(move);
 
@@ -48,13 +49,13 @@
                 if (this.moveLock) return this.nextMove = move;
                 this.moveLock = true;
 
-                if (move === 'right') this.character1.x++;
-                if (move === 'up') this.character1.y--;
-                if (move === 'down') this.character1.y++;
-
                 let animationWidth = this.$refs.view.rectSize;
                 let counter = 0;
                 let speed1 = 4;
+
+                if (move === 'right') this.character1.x++;
+                if (move === 'up') this.character1.y--;
+                if (move === 'down') this.character1.y++;
                 if (move === 'left') this.character1.x--;
 
                 let interval = setInterval(() => {

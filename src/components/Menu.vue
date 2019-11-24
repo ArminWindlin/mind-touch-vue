@@ -2,7 +2,7 @@
   <div class="menu">
     <div class="main-button-container">
       <div class="menu-button-big play" @click="$emit('play')">PLAY</div>
-      <div class="menu-button-big levels" @click="$emit('play')">LEVELS</div>
+      <div class="menu-button-big levels">LEVELS</div>
     </div>
   </div>
 </template>

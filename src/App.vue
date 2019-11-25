@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <menuu v-if="menuC" @play="play()"></menuu>
-    <game v-if="gameC" @toMenu="menuC = true; gameC = false"></game>
+    <game v-if="gameC" @toMenu="menuC = true; gameC = false" :initialLevel="level"></game>
   </div>
 </template>
 
@@ -16,6 +16,7 @@
             return {
                 menuC: true,
                 gameC: false,
+                level: 1
             };
         },
         methods: {

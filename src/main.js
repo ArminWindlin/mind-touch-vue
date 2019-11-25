@@ -18,6 +18,7 @@ Vue.config.productionTip = false;
 const store = new Vuex.Store({
     state: {
         rectSize: 40,
+        levelAmount: 2,
     },
     mutations: {
         setRectangleSize(state, size) {

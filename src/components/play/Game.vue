@@ -1,9 +1,9 @@
 <template>
   <div class="game">
-    <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
+    <view-canvas :character1="character1" :character2="character2" :grid="levelData.grid" ref="view"
                  @updateCharPositions="updateCharPositions"></view-canvas>
     <navigation-view @move="move"></navigation-view>
-    <win-screen v-if="winScreenC" @continue="winScreenC = false" @menu="$emit('toMenu')"></win-screen>
+    <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
   </div>
 </template>
 
@@ -14,15 +14,16 @@
     import {levels} from '../data/levels';
 
     export default {
-
         name: 'game',
-        props: [],
+        props: ['initialLevel'],
         components: {ViewCanvas, NavigationView, WinScreen},
         data() {
             return {
+                level: 1,
+                levelData: levels[1],
                 character1: {
-                    x: 0,
-                    y: 0,
+                    x: 1,
+                    y: 5,
                     exactX: 0,
                     exactY: 0,
                     controls: {
@@ -53,6 +54,11 @@
         },
         methods: {
             processKeyPress(keyCode) {
+                // ESC
+                if (keyCode === 27) this.$emit('toMenu');
+
+                // MOVEMENT
+                if (this.winScreenC) return;
                 let move = '';
                 // LEFT
                 if (keyCode === 37) move = 'left';
@@ -62,11 +68,7 @@
                 else if (keyCode === 39) move = 'right';
                 // DOWN
                 else if (keyCode === 40) move = 'down';
-                // ESC
-                else if (keyCode === 27) this.$emit('toMenu');
-
                 if (move !== '') this.move(move);
-
             },
             move(move) {
                 if (this.moveLock) return this.nextMove = move;
@@ -149,10 +151,10 @@
             },
             checkWin() {
                 // check if the two characters are next to each other
-                if (!(Math.abs(Math.abs(this.character1.x) - Math.abs(this.character2.x)) === 1 &&
-                        Math.abs(Math.abs(this.character1.y) - Math.abs(this.character2.y) === 0) ||
-                        Math.abs(Math.abs(this.character1.x) - Math.abs(this.character2.x) === 0) &&
-                        Math.abs(Math.abs(this.character1.y) - Math.abs(this.character2.y) === 1))) return;
+                if (!((Math.abs(this.character1.x - this.character2.x) === 1 &&
+                        Math.abs(this.character1.y - this.character2.y === 0)) ||
+                        (Math.abs(this.character1.x - this.character2.x === 0) &&
+                            Math.abs(this.character1.y - this.character2.y === 1)))) return;
                 this.winScreenC = true;
             },
             updateCharPositions(rectSize) {
@@ -161,8 +163,25 @@
                 this.character2.exactX = this.character2.x * rectSize;
                 this.character2.exactY = this.character2.y * rectSize;
             },
+            nextLevel() {
+                this.level++;
+                if (this.level >= levels.length) this.level = 1;
+                this.setLevel(this.level);
+                this.winScreenC = false;
+            },
+            setLevel(level) {
+                this.levelData = levels[level];
+                this.character2.controls = this.levelData.controls;
+                this.character1.x = this.levelData.char1Position.x;
+                this.character1.y = this.levelData.char1Position.y;
+                this.character2.x = this.levelData.char2Position.x;
+                this.character2.y = this.levelData.char2Position.y;
+                this.updateCharPositions(this.$store.state.rectSize);
+            },
         },
         beforeMount() {
+            this.level = this.initialLevel;
+            this.setLevel(this.level);
         },
         mounted() {
             // key listener

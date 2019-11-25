@@ -70,23 +70,46 @@
 
                 switch (move) {
                     case 'left':
-                        this.moveCharacters(-1, 0, -1, 0);
+                        this.moveCharacters(getIntDirections('left', this.character1), 0,
+                            getIntDirections('left', this.character2), 0);
                         break;
                     case 'right':
-                        this.moveCharacters(1, 0, 1, 0);
+                        this.moveCharacters(getIntDirections('right', this.character1), 0,
+                            getIntDirections('right', this.character2), 0);
                         break;
                     case 'up':
-                        this.moveCharacters(0, -1, 0, -1);
+                        this.moveCharacters(0, getIntDirections('up', this.character1), 0,
+                            getIntDirections('up', this.character2));
                         break;
                     case 'down':
-                        this.moveCharacters(0, 1, 0, 1);
+                        this.moveCharacters(0, getIntDirections('down', this.character1), 0,
+                            getIntDirections('down', this.character2));
                         break;
+                }
+
+                function getIntDirections(move, char) {
+                    switch (char.controls[move]) {
+                        case 'left':
+                            return -1;
+                        case 'right':
+                            return 1;
+                        case 'up':
+                            return -1;
+                        case 'down':
+                            return 1;
+                    }
                 }
             },
             moveCharacters(char1X, char1Y, char2X, char2Y) {
-                let animationWidth = this.$store.state.rectSize;
+                let rectSize = this.$store.state.rectSize;
                 let counter = 0;
-                let speed1 = animationWidth / 10;
+                let speed1 = rectSize / 10;
+
+                // check for blocking
+                if (char1X !== 0 && this.isBlocked(this.character1, 'x', char1X)) char1X = 0;
+                else if (this.isBlocked(this.character1, 'y', char1Y)) char1Y = 0;
+                if (char2X !== 0 && this.isBlocked(this.character2, 'x', char2X)) char2X = 0;
+                else if (this.isBlocked(this.character2, 'y', char2Y)) char2Y = 0;
 
                 this.character1.x += char1X;
                 this.character1.y += char1Y;
@@ -100,10 +123,10 @@
                     this.character2.exactY += speed1 * char2Y;
 
                     counter += speed1;
-                    if (counter >= animationWidth) {
+                    if (counter >= rectSize) {
                         clearInterval(interval);
-                        this.character1.exactX = this.$refs.view.rectSize * this.character1.x;
-                        this.character1.exactY = this.$refs.view.rectSize * this.character1.y;
+                        this.character1.exactX = rectSize * this.character1.x;
+                        this.character1.exactY = rectSize * this.character1.y;
                         this.moveLock = false;
                         if (this.nextMove !== '') {
                             this.move(this.nextMove);
@@ -111,6 +134,13 @@
                         }
                     }
                 }, 20);
+            },
+            isBlocked(char, XorY, dir) {
+                if (XorY === 'x' &&
+                    (char.x + dir < 0 || char.x + dir > this.grid[0].length -1)) return true;
+                if (XorY === 'y' &&
+                    (char.y + dir < 0 || char.y + dir > this.grid.length -1)) return true;
+                return false;
             },
             updateCharPositions(rectSize) {
                 this.character1.exactX = this.character1.x * rectSize;

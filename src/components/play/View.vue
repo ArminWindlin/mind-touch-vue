@@ -7,7 +7,7 @@
 <script>
     export default {
         name: 'view-canvas',
-        props: ['character1', 'grid'],
+        props: ['character1', 'character2', 'grid'],
         data() {
             return {
                 gameWidth: 640,
@@ -47,12 +47,16 @@
                 ctx.fillStyle = 'rgb(0, 0, 255)';
                 ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
 
+                // draw character 2
+                ctx.fillStyle = 'rgb(0, 255, 0)';
+                ctx.fillRect(this.character2.exactX, this.character2.exactY, rectSize, rectSize);
+
                 // grid
                 for (let i = 0; i < 14; i++) {
                     for (let j = 0; j < 7; j++) {
                         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                         ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
-                        if(this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        if (this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }
 
@@ -78,6 +82,8 @@
                 }
                 this.innerWidth = window.innerWidth;
                 this.innerHeight = window.innerHeight;
+                this.$store.commit('setRectangleSize', Math.floor(this.gameWidth / 14));
+                this.$emit('updateCharPositions', Math.floor(this.gameWidth / 14));
             },
         },
         beforeMount() {

@@ -1,6 +1,7 @@
 <template>
   <div class="game">
-    <view-canvas :character1="character1" :grid="grid" ref="view"></view-canvas>
+    <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
+                 @updateCharPositions="updateCharPositions"></view-canvas>
     <navigation-view @move="move"></navigation-view>
   </div>
 </template>
@@ -22,6 +23,24 @@
                     y: 0,
                     exactX: 0,
                     exactY: 0,
+                    controls: {
+                        left: 'left',
+                        right: 'right',
+                        up: 'up',
+                        down: 'down',
+                    },
+                },
+                character2: {
+                    x: 10,
+                    y: 5,
+                    exactX: 10,
+                    exactY: 0,
+                    controls: {
+                        left: 'left',
+                        right: 'right',
+                        up: 'up',
+                        down: 'down',
+                    },
                 },
                 moveLock: false,
                 nextMove: '',
@@ -49,20 +68,37 @@
                 if (this.moveLock) return this.nextMove = move;
                 this.moveLock = true;
 
-                let animationWidth = this.$refs.view.rectSize;
+                switch (move) {
+                    case 'left':
+                        this.moveCharacters(-1, 0, -1, 0);
+                        break;
+                    case 'right':
+                        this.moveCharacters(1, 0, 1, 0);
+                        break;
+                    case 'up':
+                        this.moveCharacters(0, -1, 0, -1);
+                        break;
+                    case 'down':
+                        this.moveCharacters(0, 1, 0, 1);
+                        break;
+                }
+            },
+            moveCharacters(char1X, char1Y, char2X, char2Y) {
+                let animationWidth = this.$store.state.rectSize;
                 let counter = 0;
-                let speed1 = 4;
+                let speed1 = animationWidth / 10;
 
-                if (move === 'right') this.character1.x++;
-                if (move === 'up') this.character1.y--;
-                if (move === 'down') this.character1.y++;
-                if (move === 'left') this.character1.x--;
+                this.character1.x += char1X;
+                this.character1.y += char1Y;
+                this.character2.x += char2X;
+                this.character2.y += char2Y;
 
                 let interval = setInterval(() => {
-                    if (move === 'right') this.character1.exactX += speed1;
-                    if (move === 'left') this.character1.exactX -= speed1;
-                    if (move === 'up') this.character1.exactY -= speed1;
-                    if (move === 'down') this.character1.exactY += speed1;
+                    this.character1.exactX += speed1 * char1X;
+                    this.character1.exactY += speed1 * char1Y;
+                    this.character2.exactX += speed1 * char2X;
+                    this.character2.exactY += speed1 * char2Y;
+
                     counter += speed1;
                     if (counter >= animationWidth) {
                         clearInterval(interval);
@@ -74,7 +110,13 @@
                             this.nextMove = '';
                         }
                     }
-                }, 10);
+                }, 20);
+            },
+            updateCharPositions(rectSize) {
+                this.character1.exactX = this.character1.x * rectSize;
+                this.character1.exactY = this.character1.y * rectSize;
+                this.character2.exactX = this.character2.x * rectSize;
+                this.character2.exactY = this.character2.y * rectSize;
             },
         },
         beforeMount() {

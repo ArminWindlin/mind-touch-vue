@@ -17,11 +17,11 @@ Vue.config.productionTip = false;
 // VueX
 const store = new Vuex.Store({
     state: {
-        unitSize: 40,
+        rectSize: 40,
     },
     mutations: {
-        increment(state) {
-            state.count++;
+        setRectangleSize(state, size) {
+            state.rectSize = size;
         },
     },
 });
@@ -38,6 +38,7 @@ const router = new VueRouter({
 
 new Vue({
     router,
+    store,
     components: {},
     template: `
     <div id="app">

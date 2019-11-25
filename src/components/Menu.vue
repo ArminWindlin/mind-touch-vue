@@ -3,6 +3,7 @@
     <div class="main-button-container">
       <div class="menu-button-big play" @click="$emit('play')">PLAY</div>
       <div class="menu-button-big levels">LEVELS</div>
+      <div class="menu-button-big update" @click="update()">UPDATE</div>
     </div>
   </div>
 </template>
@@ -14,8 +15,13 @@
         data() {
             return {};
         },
-        methods: {},
+        methods: {
+            update() {
+                location.reload();
+            },
+        },
         beforeMount() {
+            // console.log(this.$store.state.unitSize)
         },
     };
 </script>

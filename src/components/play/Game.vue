@@ -3,19 +3,21 @@
     <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
                  @updateCharPositions="updateCharPositions"></view-canvas>
     <navigation-view @move="move"></navigation-view>
+    <win-screen v-if="winScreenC" @continue="winScreenC = false" @menu="$emit('toMenu')"></win-screen>
   </div>
 </template>
 
 <script>
     import ViewCanvas from './View.vue';
     import NavigationView from './NavigationView.vue';
+    import WinScreen from './WinScreen.vue';
     import {levels} from '../data/levels';
 
     export default {
 
         name: 'game',
         props: [],
-        components: {ViewCanvas, NavigationView},
+        components: {ViewCanvas, NavigationView, WinScreen},
         data() {
             return {
                 character1: {
@@ -45,6 +47,8 @@
                 moveLock: false,
                 nextMove: '',
                 grid: [],
+                // component switches
+                winScreenC: false,
             };
         },
         methods: {
@@ -125,6 +129,7 @@
                     counter += speed1;
                     if (counter >= rectSize) {
                         clearInterval(interval);
+                        this.checkWin();
                         this.character1.exactX = rectSize * this.character1.x;
                         this.character1.exactY = rectSize * this.character1.y;
                         this.moveLock = false;
@@ -137,10 +142,18 @@
             },
             isBlocked(char, XorY, dir) {
                 if (XorY === 'x' &&
-                    (char.x + dir < 0 || char.x + dir > this.grid[0].length -1)) return true;
+                    (char.x + dir < 0 || char.x + dir > this.grid[0].length - 1)) return true;
                 if (XorY === 'y' &&
-                    (char.y + dir < 0 || char.y + dir > this.grid.length -1)) return true;
+                    (char.y + dir < 0 || char.y + dir > this.grid.length - 1)) return true;
                 return false;
+            },
+            checkWin() {
+                // check if the two characters are next to each other
+                if (!(Math.abs(Math.abs(this.character1.x) - Math.abs(this.character2.x)) === 1 &&
+                        Math.abs(Math.abs(this.character1.y) - Math.abs(this.character2.y) === 0) ||
+                        Math.abs(Math.abs(this.character1.x) - Math.abs(this.character2.x) === 0) &&
+                        Math.abs(Math.abs(this.character1.y) - Math.abs(this.character2.y) === 1))) return;
+                this.winScreenC = true;
             },
             updateCharPositions(rectSize) {
                 this.character1.exactX = this.character1.x * rectSize;

@@ -55,7 +55,7 @@
                 for (let i = 0; i < 14; i++) {
                     for (let j = 0; j < 7; j++) {
                         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-                        ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        // ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
                         if (this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }

@@ -113,6 +113,9 @@
   .view-canvas {
     position: absolute;
     top: 0;
+    -webkit-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   @media screen and (max-width: 550px) {

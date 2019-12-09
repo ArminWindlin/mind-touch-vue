@@ -16,7 +16,7 @@
             return {
                 menuC: true,
                 gameC: false,
-                level: 1
+                level: 3
             };
         },
         methods: {

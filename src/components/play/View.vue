@@ -56,7 +56,11 @@
                     for (let j = 0; j < 7; j++) {
                         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                         // ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        // black wall
                         if (this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        // red wall
+                        ctx.fillStyle = 'rgba(250, 0, 0, 0.8)';
+                        if (this.grid[j][i] === 2) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }
 

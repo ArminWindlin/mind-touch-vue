@@ -4,6 +4,7 @@
                  @updateCharPositions="updateCharPositions"></view-canvas>
     <navigation-view @move="move"></navigation-view>
     <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
+    <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
   </div>
 </template>
 
@@ -11,12 +12,16 @@
     import ViewCanvas from './View.vue';
     import NavigationView from './NavigationView.vue';
     import WinScreen from './WinScreen.vue';
+    import LoseScreen from './LoseScreen.vue';
     import {levels} from '../data/levels';
 
     export default {
         name: 'game',
         props: ['initialLevel'],
-        components: {ViewCanvas, NavigationView, WinScreen},
+        components: {
+            LoseScreen,
+            ViewCanvas, NavigationView, WinScreen,
+        },
         data() {
             return {
                 level: 1,
@@ -50,6 +55,7 @@
                 grid: [],
                 // component switches
                 winScreenC: false,
+                loseScreenC: false,
             };
         },
         methods: {
@@ -59,9 +65,10 @@
 
                 // ENTER
                 if (keyCode === 13 && this.winScreenC) this.nextLevel();
+                if (keyCode === 13 && this.loseScreenC) this.replayLevel();
 
                 // MOVEMENT
-                if (this.winScreenC) return;
+                if (this.winScreenC || this.loseScreenC) return;
                 let move = '';
                 // LEFT
                 if (keyCode === 37) move = 'left';
@@ -144,6 +151,7 @@
                     }
                 }, 20);
                 this.checkWin();
+                this.checkLoss();
             },
             isBlocked(char, XorY, dir) {
                 if (XorY === 'x') {
@@ -160,12 +168,28 @@
                 }
                 return false;
             },
+            checkLoss() {
+                let c1 = this.character1;
+                let c2 = this.character2;
+                let grid = this.grid;
+                if ((c1.x + 1 < grid[c1.y].length && grid[c1.y][c1.x + 1] === 2) ||
+                    (c1.x - 1 >= 0 && grid[c1.y][c1.x - 1] === 2) ||
+                    (c1.y + 1 < grid.length && grid[c1.y + 1][c1.x] === 2) ||
+                    (c1.y - 1 >= 0 && grid[c1.y - 1][c1.x] === 2) ||
+                    (c2.x + 1 < grid[c2.y].length && grid[c2.y][c2.x + 1] === 2) ||
+                    (c2.x - 1 >= 0 && grid[c2.y][c2.x - 1] === 2) ||
+                    (c2.y + 1 < grid.length && grid[c2.y + 1][c2.x] === 2) ||
+                    (c2.y - 1 >= 0 && grid[c2.y - 1][c2.x] === 2))
+                    this.loseScreenC = true;
+            },
             checkWin() {
                 // check if the two characters are next to each other
                 if (!((Math.abs(this.character1.x - this.character2.x) === 1 &&
                         Math.abs(this.character1.y - this.character2.y === 0)) ||
                         (Math.abs(this.character1.x - this.character2.x === 0) &&
-                            Math.abs(this.character1.y - this.character2.y === 1)))) return;
+                            Math.abs(this.character1.y - this.character2.y === 1)) ||
+                        (Math.abs(this.character1.x - this.character2.x === 0) &&
+                            Math.abs(this.character1.y - this.character2.y === 0)))) return;
                 this.winScreenC = true;
             },
             updateCharPositions(rectSize) {
@@ -179,6 +203,10 @@
                 if (this.level >= levels.length) this.level = 1;
                 this.setLevel(this.level);
                 this.winScreenC = false;
+            },
+            replayLevel() {
+                this.setLevel(this.level);
+                this.loseScreenC = false;
             },
             setLevel(level) {
                 this.levelData = levels[level];

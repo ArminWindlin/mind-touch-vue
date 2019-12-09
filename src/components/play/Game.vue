@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <view-canvas :character1="character1" :character2="character2" :grid="levelData.grid" ref="view"
+    <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
                  @updateCharPositions="updateCharPositions"></view-canvas>
     <navigation-view @move="move"></navigation-view>
     <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
@@ -56,6 +56,9 @@
             processKeyPress(keyCode) {
                 // ESC
                 if (keyCode === 27) this.$emit('toMenu');
+
+                // ENTER
+                if (keyCode === 13 && this.winScreenC) this.nextLevel();
 
                 // MOVEMENT
                 if (this.winScreenC) return;
@@ -131,7 +134,6 @@
                     counter += speed1;
                     if (counter >= rectSize) {
                         clearInterval(interval);
-                        this.checkWin();
                         this.character1.exactX = rectSize * this.character1.x;
                         this.character1.exactY = rectSize * this.character1.y;
                         this.moveLock = false;
@@ -141,12 +143,21 @@
                         }
                     }
                 }, 20);
+                this.checkWin();
             },
             isBlocked(char, XorY, dir) {
-                if (XorY === 'x' &&
-                    (char.x + dir < 0 || char.x + dir > this.grid[0].length - 1)) return true;
-                if (XorY === 'y' &&
-                    (char.y + dir < 0 || char.y + dir > this.grid.length - 1)) return true;
+                if (XorY === 'x') {
+                    // collision with game border
+                    if ((char.x + dir < 0 || char.x + dir > this.grid[0].length - 1)) return true;
+                    // collision with black object
+                    if (this.grid[char.y][char.x + dir] === 1) return true;
+                }
+                if (XorY === 'y') {
+                    // collision with game border
+                    if ((char.y + dir < 0 || char.y + dir > this.grid.length - 1)) return true;
+                    // collision with black object
+                    if (this.grid[char.y + dir][char.x] === 1) return true;
+                }
                 return false;
             },
             checkWin() {
@@ -171,6 +182,7 @@
             },
             setLevel(level) {
                 this.levelData = levels[level];
+                this.grid = this.levelData.grid;
                 this.character2.controls = this.levelData.controls;
                 this.character1.x = this.levelData.char1Position.x;
                 this.character1.y = this.levelData.char1Position.y;
@@ -189,8 +201,6 @@
             document.addEventListener('keydown', function(event) {
                 self.processKeyPress(event.keyCode);
             });
-
-            this.grid = levels[1].grid;
         },
     };
 </script>

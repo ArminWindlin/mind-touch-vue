@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import PrivacyPolicy from './components/subpages/PrivacyPolicy.vue';
 import HelloWorld from './components/subpages/HelloWorld.vue';
-import Game from './components/play/Game.vue';
+import VueLocalStorage from 'vue-localstorage';
 import App from './App.vue';
 
 import './global.scss';
@@ -11,6 +11,7 @@ import './reset.scss';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(VueLocalStorage);
 
 Vue.config.productionTip = false;
 

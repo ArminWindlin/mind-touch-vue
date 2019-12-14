@@ -1,11 +1,11 @@
 <template>
-  <div class="game">
-    <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
-                 @updateCharPositions="updateCharPositions"></view-canvas>
-    <navigation-view @move="move"></navigation-view>
-    <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
-    <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
-  </div>
+    <div class="game">
+        <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
+                     @updateCharPositions="updateCharPositions"></view-canvas>
+        <navigation-view @move="move"></navigation-view>
+        <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
+        <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
+    </div>
 </template>
 
 <script>
@@ -185,12 +185,14 @@
             checkWin() {
                 // check if the two characters are next to each other
                 if (!((Math.abs(this.character1.x - this.character2.x) === 1 &&
-                        Math.abs(this.character1.y - this.character2.y === 0)) ||
-                        (Math.abs(this.character1.x - this.character2.x === 0) &&
-                            Math.abs(this.character1.y - this.character2.y === 1)) ||
-                        (Math.abs(this.character1.x - this.character2.x === 0) &&
-                            Math.abs(this.character1.y - this.character2.y === 0)))) return;
+                    Math.abs(this.character1.y - this.character2.y === 0)) ||
+                    (Math.abs(this.character1.x - this.character2.x === 0) &&
+                        Math.abs(this.character1.y - this.character2.y === 1)) ||
+                    (Math.abs(this.character1.x - this.character2.x === 0) &&
+                        Math.abs(this.character1.y - this.character2.y === 0)))) return;
                 this.winScreenC = true;
+                if (this.level > this.$localStorage.get('level'))
+                    this.$localStorage.set('level', this.level);
             },
             updateCharPositions(rectSize) {
                 this.character1.exactX = this.character1.x * rectSize;
@@ -209,6 +211,7 @@
                 this.loseScreenC = false;
             },
             setLevel(level) {
+                if (level >= levels.length) level = levels.length - 1;
                 this.levelData = levels[level];
                 this.grid = this.levelData.grid;
                 this.character2.controls = this.levelData.controls;
@@ -226,7 +229,7 @@
         mounted() {
             // key listener
             let self = this;
-            document.addEventListener('keydown', function(event) {
+            document.addEventListener('keydown', function (event) {
                 self.processKeyPress(event.keyCode);
             });
         },
@@ -234,6 +237,6 @@
 </script>
 
 <style scoped>
-  @media screen and (max-width: 550px) {
-  }
+    @media screen and (max-width: 550px) {
+    }
 </style>

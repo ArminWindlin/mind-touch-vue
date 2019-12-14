@@ -1,7 +1,8 @@
 <template>
     <div class="level-selection">
         <div class="levels-container">
-            <div class="level" v-for="level in levels" :key="level.index" @click="$emit('play', level.number)">
+            <div class="level" v-for="level in levels" :key="level.index" @click="$emit('play', level.number)"
+                 :class="[{'done': progress > level.number},{'current': progress === level.number}]">
                 {{level.number}}
             </div>
         </div>
@@ -16,11 +17,15 @@
         props: [],
         data() {
             return {
-                levels: levels
+                levels: [],
+                progress: 1
             };
         },
         methods: {},
         beforeMount() {
+            this.progress = Number(this.$localStorage.get('level')) + 1;
+            this.levels = levels.slice();
+            this.levels.splice(0, 1);
         },
     };
 </script>
@@ -43,6 +48,14 @@
         font-size: 30px;
         line-height: 100px;
         margin: 10px;
+    }
+
+    .level.done {
+        background-color: blue;
+    }
+
+    .level.current {
+        background-color: yellow;
     }
 
     @media screen and (max-width: 550px) {

@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <menuu v-if="menuC" @play="play()" @levels="levelSelectionC = true, menuC = false"></menuu>
-    <level-selection v-if="levelSelectionC" @play="playLevel"></level-selection>
-    <game v-if="gameC" @toMenu="menuC = true; gameC = false" :initialLevel="level"></game>
-  </div>
+    <div id="app">
+        <menuu v-if="menuC" @play="play()" @levels="levelSelectionC = true, menuC = false"></menuu>
+        <level-selection v-if="levelSelectionC" @play="playLevel"></level-selection>
+        <game v-if="gameC" @toMenu="menuC = true; gameC = false" :initialLevel="level"></game>
+    </div>
 </template>
 
 <script>
@@ -19,7 +19,7 @@
                 menuC: true,
                 levelSelectionC: false,
                 gameC: false,
-                level: 3
+                level: 1
             };
         },
         methods: {
@@ -33,11 +33,14 @@
                 this.gameC = true;
             },
         },
+        beforeMount() {
+            this.level = this.$localStorage.get('level') + 1;
+        }
     };
 </script>
 
 <style>
-  #app {
-    font-family: Verdana, Geneva, sans-serif;
-  }
+    #app {
+        font-family: Verdana, Geneva, sans-serif;
+    }
 </style>

@@ -1,11 +1,11 @@
 <template>
-    <div class="game">
-        <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
-                     @updateCharPositions="updateCharPositions"></view-canvas>
-        <navigation-view @move="move" :controls2="character2.controls"></navigation-view>
-        <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
-        <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
-    </div>
+  <div class="game">
+    <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
+                 @updateCharPositions="updateCharPositions"></view-canvas>
+    <navigation-view @move="move" :controls2="character2.controls"></navigation-view>
+    <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
+    <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
+  </div>
 </template>
 
 <script>
@@ -84,23 +84,28 @@
                 if (this.moveLock) return this.nextMove = move;
                 this.moveLock = true;
 
-                switch (move) {
-                    case 'left':
-                        this.moveCharacters(getIntDirections('left', this.character1), 0,
-                            getIntDirections('left', this.character2), 0);
-                        break;
-                    case 'right':
-                        this.moveCharacters(getIntDirections('right', this.character1), 0,
-                            getIntDirections('right', this.character2), 0);
-                        break;
-                    case 'up':
-                        this.moveCharacters(0, getIntDirections('up', this.character1), 0,
-                            getIntDirections('up', this.character2));
-                        break;
-                    case 'down':
-                        this.moveCharacters(0, getIntDirections('down', this.character1), 0,
-                            getIntDirections('down', this.character2));
-                        break;
+                this.moveCharacters(...getIntDirectionsArray(move, this.character2));
+
+                function getIntDirectionsArray(move, char) {
+                    let move2 = char.controls[move];
+                    switch (move) {
+                        case 'left':
+                            if (move2 === 'left' || move2 === 'right')
+                                return [-1, 0, getIntDirections(move, char), 0];
+                            else return [-1, 0, 0, getIntDirections(move, char)];
+                        case 'right':
+                            if (move2 === 'left' || move2 === 'right')
+                                return [1, 0, getIntDirections(move, char), 0];
+                            else return [1, 0, 0, getIntDirections(move, char)];
+                        case 'up':
+                            if (move2 === 'left' || move2 === 'right')
+                                return [0, -1, getIntDirections(move, char), 0];
+                            else return [0, -1, 0, getIntDirections(move, char)];
+                        case 'down':
+                            if (move2 === 'left' || move2 === 'right')
+                                return [0, 1, getIntDirections(move, char), 0];
+                            else return [0, 1, 0, getIntDirections(move, char)];
+                    }
                 }
 
                 function getIntDirections(move, char) {
@@ -185,11 +190,11 @@
             checkWin() {
                 // check if the two characters are next to each other
                 if (!((Math.abs(this.character1.x - this.character2.x) === 1 &&
-                    Math.abs(this.character1.y - this.character2.y === 0)) ||
-                    (Math.abs(this.character1.x - this.character2.x === 0) &&
-                        Math.abs(this.character1.y - this.character2.y === 1)) ||
-                    (Math.abs(this.character1.x - this.character2.x === 0) &&
-                        Math.abs(this.character1.y - this.character2.y === 0)))) return;
+                        Math.abs(this.character1.y - this.character2.y === 0)) ||
+                        (Math.abs(this.character1.x - this.character2.x === 0) &&
+                            Math.abs(this.character1.y - this.character2.y === 1)) ||
+                        (Math.abs(this.character1.x - this.character2.x === 0) &&
+                            Math.abs(this.character1.y - this.character2.y === 0)))) return;
                 this.winScreenC = true;
                 if (this.level > this.$localStorage.get('level'))
                     this.$localStorage.set('level', this.level);
@@ -229,7 +234,7 @@
         mounted() {
             // key listener
             let self = this;
-            document.addEventListener('keydown', function (event) {
+            document.addEventListener('keydown', function(event) {
                 self.processKeyPress(event.keyCode);
             });
         },
@@ -237,6 +242,6 @@
 </script>
 
 <style scoped>
-    @media screen and (max-width: 550px) {
-    }
+  @media screen and (max-width: 550px) {
+  }
 </style>

@@ -44,22 +44,22 @@
                 let rectSize = this.rectSize;
 
                 // draw character 1
-                ctx.fillStyle = 'rgb(0, 0, 255)';
+                ctx.fillStyle = '#6200EA';
                 ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
 
                 // draw character 2
-                ctx.fillStyle = 'rgb(0, 255, 0)';
+                ctx.fillStyle = '#8BC34A';
                 ctx.fillRect(this.character2.exactX, this.character2.exactY, rectSize, rectSize);
 
                 // grid
                 for (let i = 0; i < 14; i++) {
                     for (let j = 0; j < 7; j++) {
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                        ctx.fillStyle = '#000000';
                         // ctx.strokeRect(i * rectSize, j * rectSize, rectSize, rectSize);
                         // black wall
                         if (this.grid[j][i] === 1) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                         // red wall
-                        ctx.fillStyle = 'rgba(250, 0, 0, 0.8)';
+                        ctx.fillStyle = 'rgb(244, 67, 54)';
                         if (this.grid[j][i] === 2) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }

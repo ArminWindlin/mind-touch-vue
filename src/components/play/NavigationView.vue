@@ -1,27 +1,43 @@
 <template>
   <div class="navigation-view">
-    <div class="navigation-left">
-      <div class="navigation-button left" @click="$emit('move', 'left')"></div>
-      <div class="navigation-button right" @click="$emit('move', 'right')"></div>
-      <div class="navigation-button up" @click="$emit('move', 'up')"></div>
-      <div class="navigation-button down" @click="$emit('move', 'down')"></div>
-    </div>
-    <div class="navigation-rigth">
-      <div class="navigation-button left" @click="$emit('move', 'left')"></div>
-      <div class="navigation-button right" @click="$emit('move', 'right')"></div>
-      <div class="navigation-button up" @click="$emit('move', 'up')"></div>
-      <div class="navigation-button down" @click="$emit('move', 'down')"></div>
-    </div>
-    <div class="navigation-right">
 
+    <div class="navigation-left">
+      <div class="navigation-button left" @click="$emit('move', 'left')">
+        <div class="arrow arrow-left"></div>
+      </div>
+      <div class="navigation-button right" @click="$emit('move', 'right')">
+        <div class="arrow arrow-right"></div>
+      </div>
+      <div class="navigation-button up" @click="$emit('move', 'up')">
+        <div class="arrow arrow-up"></div>
+      </div>
+      <div class="navigation-button down" @click="$emit('move', 'down')">
+        <div class="arrow arrow-down"></div>
+      </div>
     </div>
+
+    <div class="navigation-right">
+      <div class="navigation-button left" @click="$emit('move', 'left')">
+        <div class="arrow" :class="'arrow-' + controls2['left']"></div>
+      </div>
+      <div class="navigation-button right" @click="$emit('move', 'right')">
+        <div class="arrow" :class="'arrow-' + controls2['right']"></div>
+      </div>
+      <div class="navigation-button up" @click="$emit('move', 'up')">
+        <div class="arrow" :class="'arrow-' + controls2['up']"></div>
+      </div>
+      <div class="navigation-button down" @click="$emit('move', 'down')">
+        <div class="arrow" :class="'arrow-' + controls2['down']"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
     export default {
         name: 'navigation-view',
-        props: [],
+        props: ['controls2'],
         data() {
             return {};
         },
@@ -35,7 +51,7 @@
   .navigation-button {
     width: 50px;
     height: 50px;
-    background-color: rgba(50, 50, 250, 0.5);
+    background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
   }
 
@@ -63,28 +79,47 @@
     left: 70px;
   }
 
-  .navigation-rigth .left {
+  .navigation-right .left {
     position: absolute;
     bottom: 70px;
     right: 120px;
   }
 
-  .navigation-rigth .right {
+  .navigation-right .right {
     position: absolute;
     bottom: 70px;
     right: 20px;
   }
 
-  .navigation-rigth .up {
+  .navigation-right .up {
     position: absolute;
     bottom: 120px;
     right: 70px;
   }
 
-  .navigation-rigth .down {
+  .navigation-right .down {
     position: absolute;
     bottom: 20px;
     right: 70px;
+  }
+
+  .arrow {
+    margin: 3px;
+    width: 44px;
+    height: 44px;
+    background: url('../../assets/ArrowLeft.svg') no-repeat center center;
+  }
+
+  .arrow.arrow-left {
+    transform: rotate(180deg);
+  }
+
+  .arrow.arrow-up {
+    transform: rotate(-90deg);
+  }
+
+  .arrow.arrow-down {
+    transform: rotate(90deg);
   }
 
   @media screen and (max-width: 550px) {

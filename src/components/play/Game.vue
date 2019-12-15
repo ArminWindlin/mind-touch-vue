@@ -124,7 +124,7 @@
             moveCharacters(char1X, char1Y, char2X, char2Y) {
                 let rectSize = this.$store.state.rectSize;
                 let counter = 0;
-                let speed1 = rectSize / 10;
+                let speed1 = rectSize / 6;
 
                 // check for blocking
                 if (char1X !== 0 && this.isBlocked(this.character1, 'x', char1X)) char1X = 0;

@@ -1,7 +1,7 @@
 <template>
-  <div class="navigation-view" @click="$emit('levelScreen')">
+  <div class="navigation-view">
 
-    <div class="level-display">
+    <div class="level-display" @click="$emit('levelScreen')">
       Level {{level}}
     </div>
 

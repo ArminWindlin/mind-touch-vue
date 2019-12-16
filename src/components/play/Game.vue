@@ -190,11 +190,11 @@
             checkWin() {
                 // check if the two characters are next to each other
                 if (!((Math.abs(this.character1.x - this.character2.x) === 1 &&
-                        Math.abs(this.character1.y - this.character2.y === 0)) ||
-                        (Math.abs(this.character1.x - this.character2.x === 0) &&
-                            Math.abs(this.character1.y - this.character2.y === 1)) ||
-                        (Math.abs(this.character1.x - this.character2.x === 0) &&
-                            Math.abs(this.character1.y - this.character2.y === 0)))) return;
+                        this.character1.y - this.character2.y === 0) ||
+                        (this.character1.x - this.character2.x === 0 &&
+                            Math.abs(this.character1.y - this.character2.y) === 1) ||
+                        (this.character1.x - this.character2.x === 0 &&
+                            this.character1.y - this.character2.y === 0))) return;
                 this.winScreenC = true;
                 if (this.level > this.$localStorage.get('level'))
                     this.$localStorage.set('level', this.level);

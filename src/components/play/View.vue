@@ -43,14 +43,6 @@
                 this.rectSize = Math.floor(this.gameWidth / 14);
                 let rectSize = this.rectSize;
 
-                // draw character 1
-                ctx.fillStyle = '#6200EA';
-                ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
-
-                // draw character 2
-                ctx.fillStyle = '#8BC34A';
-                ctx.fillRect(this.character2.exactX, this.character2.exactY, rectSize, rectSize);
-
                 // grid
                 for (let i = 0; i < 14; i++) {
                     for (let j = 0; j < 7; j++) {
@@ -61,8 +53,19 @@
                         // red wall
                         ctx.fillStyle = 'rgb(244, 67, 54)';
                         if (this.grid[j][i] === 2) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
+                        // portal
+                        ctx.fillStyle = 'rgb(175, 82, 222)';
+                        if (this.grid[j][i] === 3) ctx.fillRect(i * rectSize, j * rectSize, rectSize, rectSize);
                     }
                 }
+
+                // draw character 1
+                ctx.fillStyle = '#6200EA';
+                ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
+
+                // draw character 2
+                ctx.fillStyle = '#8BC34A';
+                ctx.fillRect(this.character2.exactX, this.character2.exactY, rectSize, rectSize);
 
                 ctx.restore();
 

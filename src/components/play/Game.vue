@@ -148,15 +148,18 @@
                         clearInterval(interval);
                         this.character1.exactX = rectSize * this.character1.x;
                         this.character1.exactY = rectSize * this.character1.y;
+                        this.character2.exactX = rectSize * this.character2.x;
+                        this.character2.exactY = rectSize * this.character2.y;
                         this.moveLock = false;
+                        this.checkPortal();
+                        this.checkWin();
+                        this.checkLoss();
                         if (this.nextMove !== '') {
                             this.move(this.nextMove);
                             this.nextMove = '';
                         }
                     }
                 }, 20);
-                this.checkWin();
-                this.checkLoss();
             },
             isBlocked(char, XorY, dir) {
                 if (XorY === 'x') {
@@ -199,6 +202,35 @@
                 if (this.level > this.$localStorage.get('level'))
                     this.$localStorage.set('level', this.level);
             },
+            checkPortal() {
+                let c1 = this.character1;
+                let c2 = this.character2;
+                let grid = this.grid;
+                if (grid[c1.y][c1.x] === 3) {
+                    grid[c1.y][c1.x] = 0;
+                    this.port(c1);
+                }
+                if (grid[c2.y][c2.x] === 3) {
+                    grid[c2.y][c2.x] = 0;
+                    this.port(c2);
+                }
+            },
+            port(character) {
+                let grid = this.grid;
+                let rectSize = this.$store.state.rectSize;
+                for (let i = 0; i < grid.length; i++) {
+                    for (let j = 0; j < grid[i].length; j++) {
+                        if (grid[i][j] === 3) {
+                            character.x = j;
+                            character.y = i;
+                            character.exactX = rectSize * character.x;
+                            character.exactY = rectSize * character.y;
+                            grid[i][j] = 0;
+                            break;
+                        }
+                    }
+                }
+            },
             updateCharPositions(rectSize) {
                 this.character1.exactX = this.character1.x * rectSize;
                 this.character1.exactY = this.character1.y * rectSize;
@@ -217,7 +249,8 @@
             },
             setLevel(level) {
                 if (level >= levels.length) level = levels.length - 1;
-                this.levelData = levels[level];
+                // clone object without reference
+                this.levelData = JSON.parse(JSON.stringify(levels[level]));
                 this.grid = this.levelData.grid;
                 this.character2.controls = this.levelData.controls;
                 this.character1.x = this.levelData.char1Position.x;

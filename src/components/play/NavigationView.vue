@@ -1,5 +1,13 @@
 <template>
-  <div class="navigation-view">
+  <div class="navigation-view" @click="$emit('levelScreen')">
+
+    <div class="level-display">
+      Level {{level}}
+    </div>
+
+    <div class="menu-button" @click="$emit('menu')">
+      Menu
+    </div>
 
     <div class="navigation-left">
       <div class="navigation-button left" @click="$emit('move', 'left')">
@@ -37,7 +45,7 @@
 <script>
     export default {
         name: 'navigation-view',
-        props: ['controls2'],
+        props: ['controls2', 'level'],
         data() {
             return {};
         },
@@ -48,6 +56,29 @@
 </script>
 
 <style scoped>
+
+  .level-display {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+    background-color: rgba(50, 50, 50, 0.4);
+    border-radius: 5px;
+  }
+
+  .menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
+    background-color: rgba(50, 50, 50, 0.4);
+    border-radius: 5px;
+  }
+
   .navigation-button {
     width: 50px;
     height: 50px;

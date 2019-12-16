@@ -2,7 +2,8 @@
   <div class="game">
     <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
                  @updateCharPositions="updateCharPositions"></view-canvas>
-    <navigation-view @move="move" :controls2="character2.controls"></navigation-view>
+    <navigation-view @move="move" :controls2="character2.controls" :level="level"
+                     @menu="$emit('toMenu')" @levelScreen="$emit('toLevelScreen')"></navigation-view>
     <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
     <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
   </div>

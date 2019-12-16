@@ -61,17 +61,32 @@
 
                 // draw character 1
                 ctx.fillStyle = '#6200EA';
-                ctx.fillRect(this.character1.exactX, this.character1.exactY, rectSize, rectSize);
+                this.drawOctagon(ctx, rectSize / 1.83, this.character1.exactX + rectSize / 2, this.character1.exactY +
+                    rectSize / 2);
 
                 // draw character 2
                 ctx.fillStyle = '#8BC34A';
-                ctx.fillRect(this.character2.exactX, this.character2.exactY, rectSize, rectSize);
+                this.drawOctagon(ctx, rectSize / 1.83, this.character2.exactX + rectSize / 2, this.character2.exactY +
+                    rectSize / 2);
+
 
                 ctx.restore();
 
                 const sinceStart = Date.now() - this.startTime;
                 this.fps = Math.round(1000 / (sinceStart / ++this.frameCount) * 100) / 100;
                 window.requestAnimationFrame(this.render);
+            },
+            drawOctagon(ctx, size, Xcenter, Ycenter) {
+                let numberOfSides = 8;
+                ctx.beginPath();
+                ctx.moveTo(Xcenter + size * Math.cos(Math.PI / 8), Ycenter + size * Math.sin(Math.PI / 8));
+                for (let i = 1; i <= numberOfSides; i += 1) {
+                    ctx.lineTo(Xcenter + size *
+                        Math.cos(i * 2 * Math.PI / numberOfSides + Math.PI / 8),
+                        Ycenter + size *
+                        Math.sin(i * 2 * Math.PI / numberOfSides + Math.PI / 8));
+                }
+                ctx.fill();
             },
             animationTest() {
                 let interval = setInterval(() => {
@@ -116,9 +131,9 @@
   .view-canvas {
     position: absolute;
     top: 0;
-    -webkit-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
-    box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   @media screen and (max-width: 550px) {

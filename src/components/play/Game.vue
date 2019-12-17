@@ -217,20 +217,22 @@
                 }
             },
             port(character) {
+                console.log('hzz');
                 let grid = this.grid;
                 let rectSize = this.$store.state.rectSize;
-                for (let i = 0; i < grid.length; i++) {
-                    for (let j = 0; j < grid[i].length; j++) {
-                        if (grid[i][j] === 3) {
-                            character.x = j;
-                            character.y = i;
-                            character.exactX = rectSize * character.x;
-                            character.exactY = rectSize * character.y;
-                            grid[i][j] = 0;
-                            break;
+                breakpoint:
+                    for (let i = grid.length - 1; i >= 0; i--) {
+                        for (let j = 0; j < grid[i].length; j++) {
+                            if (grid[i][j] === 3) {
+                                character.x = j;
+                                character.y = i;
+                                character.exactX = rectSize * character.x;
+                                character.exactY = rectSize * character.y;
+                                grid[i][j] = 0;
+                                break breakpoint;
+                            }
                         }
                     }
-                }
             },
             updateCharPositions(rectSize) {
                 this.character1.exactX = this.character1.x * rectSize;

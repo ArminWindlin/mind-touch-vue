@@ -62,7 +62,7 @@
         methods: {
             moveButtonEffect(dir) {
                 this.activeMove = dir;
-                setTimeout(() => this.activeMove = '', 400);
+                setTimeout(() => this.activeMove = '', 300);
             },
         },
         beforeMount() {
@@ -81,6 +81,7 @@
     padding: 5px;
     background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
   }
 
   .menu-button {
@@ -92,6 +93,7 @@
     padding: 5px;
     background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
   }
 
   .navigation-button {
@@ -100,7 +102,7 @@
     background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
     box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
-    transition: box-shadow 200ms;
+    transition: box-shadow 150ms;
   }
 
   .navigation-left .left {
@@ -153,12 +155,12 @@
 
   .activeB {
     box-shadow: inset 0 0 10px 10px #6200EA;
-    transition: box-shadow 200ms;
+    transition: box-shadow 150ms;
   }
 
   .activeG {
     box-shadow: inset 0 0 10px 10px #8BC34A;
-    transition: box-shadow 200ms;
+    transition: box-shadow 150ms;
   }
 
   .arrow {

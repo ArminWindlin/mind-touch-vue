@@ -243,7 +243,7 @@ export const levels = [
             x: 13,
             y: 3,
         },
-        timer: 8
+        timer: 6
     },
 
 ];

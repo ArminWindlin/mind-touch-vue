@@ -272,12 +272,10 @@
             startTimer() {
                 this.timerTimeout = setTimeout(() => {
                     this.loseScreenC = true;
+                    this.stopTimer();
                 }, 1000 * this.levelData.timer);
                 this.remainingTime = this.levelData.timer;
-                this.timerInterval = setInterval(() => {
-                    if (this.remainingTime === 0) clearInterval(this.timerInterval);
-                    else this.remainingTime--;
-                }, 1000);
+                this.timerInterval = setInterval(() => this.remainingTime--, 1000);
             },
             stopTimer() {
                 clearTimeout(this.timerTimeout);

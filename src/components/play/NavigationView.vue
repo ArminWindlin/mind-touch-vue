@@ -10,31 +10,39 @@
     </div>
 
     <div class="navigation-left">
-      <div class="navigation-button left" @click="$emit('move', 'left')">
+      <div class="navigation-button left" :class="{'activeB': activeMove === 'left'}"
+           @click="$emit('move', 'left'); moveButtonEffect('left')">
         <div class="arrow arrow-left"></div>
       </div>
-      <div class="navigation-button right" @click="$emit('move', 'right')">
+      <div class="navigation-button right" :class="{'activeB': activeMove === 'right'}"
+           @click="$emit('move', 'right'); moveButtonEffect('right')">
         <div class="arrow arrow-right"></div>
       </div>
-      <div class="navigation-button up" @click="$emit('move', 'up')">
+      <div class="navigation-button up" :class="{'activeB': activeMove === 'up'}"
+           @click="$emit('move', 'up'); moveButtonEffect('up')">
         <div class="arrow arrow-up"></div>
       </div>
-      <div class="navigation-button down" @click="$emit('move', 'down')">
+      <div class="navigation-button down" :class="{'activeB': activeMove === 'down'}"
+           @click="$emit('move', 'down'); moveButtonEffect('down')">
         <div class="arrow arrow-down"></div>
       </div>
     </div>
 
     <div class="navigation-right">
-      <div class="navigation-button left" @click="$emit('move', 'left')">
+      <div class="navigation-button left" :class="{'activeG': activeMove === 'left'}"
+           @click="$emit('move', 'left'); moveButtonEffect('left')">
         <div class="arrow" :class="'arrow-' + controls2['left']"></div>
       </div>
-      <div class="navigation-button right" @click="$emit('move', 'right')">
+      <div class="navigation-button right" :class="{'activeG': activeMove === 'right'}"
+           @click="$emit('move', 'right'); moveButtonEffect('right')">
         <div class="arrow" :class="'arrow-' + controls2['right']"></div>
       </div>
-      <div class="navigation-button up" @click="$emit('move', 'up')">
+      <div class="navigation-button up" :class="{'activeG': activeMove === 'up'}"
+           @click="$emit('move', 'up'); moveButtonEffect('up')">
         <div class="arrow" :class="'arrow-' + controls2['up']"></div>
       </div>
-      <div class="navigation-button down" @click="$emit('move', 'down')">
+      <div class="navigation-button down" :class="{'activeG': activeMove === 'down'}"
+           @click="$emit('move', 'down'); moveButtonEffect('down')">
         <div class="arrow" :class="'arrow-' + controls2['down']"></div>
       </div>
     </div>
@@ -47,9 +55,16 @@
         name: 'navigation-view',
         props: ['controls2', 'level'],
         data() {
-            return {};
+            return {
+                activeMove: '',
+            };
         },
-        methods: {},
+        methods: {
+            moveButtonEffect(dir) {
+                this.activeMove = dir;
+                setTimeout(() => this.activeMove = '', 400);
+            },
+        },
         beforeMount() {
         },
     };
@@ -84,6 +99,8 @@
     height: 50px;
     background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
+    transition: box-shadow 200ms;
   }
 
   .navigation-left .left {
@@ -132,6 +149,16 @@
     position: absolute;
     bottom: 20px;
     right: 70px;
+  }
+
+  .activeB {
+    box-shadow: inset 0 0 10px 10px #6200EA;
+    transition: box-shadow 200ms;
+  }
+
+  .activeG {
+    box-shadow: inset 0 0 10px 10px #8BC34A;
+    transition: box-shadow 200ms;
   }
 
   .arrow {

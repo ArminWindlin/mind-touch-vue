@@ -36,6 +36,7 @@
         },
         beforeMount() {
             this.level = Number(this.$localStorage.get('level')) + 1;
+
         },
     };
 </script>

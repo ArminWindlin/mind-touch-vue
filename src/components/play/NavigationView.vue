@@ -5,6 +5,10 @@
       Level {{level}}
     </div>
 
+    <div class="timer" v-if="remainingTime > -1" @click="$emit('levelScreen')">
+      Timer: {{remainingTime}}s
+    </div>
+
     <div class="menu-button" @click="$emit('menu')">
       Menu
     </div>
@@ -53,7 +57,7 @@
 <script>
     export default {
         name: 'navigation-view',
-        props: ['controls2', 'level'],
+        props: ['controls2', 'level', 'remainingTime'],
         data() {
             return {
                 activeMove: '',
@@ -81,6 +85,18 @@
     padding: 5px;
     background-color: rgba(50, 50, 50, 0.4);
     border-radius: 5px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  }
+
+  .timer {
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    top: 10px;
+    left: calc(50vw - 100px);
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
   }
 

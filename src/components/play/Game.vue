@@ -2,7 +2,7 @@
   <div class="game">
     <view-canvas :character1="character1" :character2="character2" :grid="grid" ref="view"
                  @updateCharPositions="updateCharPositions"></view-canvas>
-    <navigation-view @move="move" :controls2="character2.controls" :level="level"
+    <navigation-view @move="move" :controls2="character2.controls" :level="level" :remainingTime="remainingTime"
                      @menu="$emit('toMenu')" @levelScreen="$emit('toLevelScreen')"></navigation-view>
     <win-screen v-if="winScreenC" @continue="nextLevel()" @menu="$emit('toMenu')"></win-screen>
     <lose-screen v-if="loseScreenC" @continue="replayLevel()" @menu="$emit('toMenu')"></lose-screen>
@@ -54,6 +54,9 @@
                 moveLock: false,
                 nextMove: '',
                 grid: [],
+                timerTimeout: null,
+                timerInterval: null,
+                remainingTime: -1,
                 // component switches
                 winScreenC: false,
                 loseScreenC: false,
@@ -188,8 +191,10 @@
                     (c2.x + 1 < grid[c2.y].length && grid[c2.y][c2.x + 1] === 2) ||
                     (c2.x - 1 >= 0 && grid[c2.y][c2.x - 1] === 2) ||
                     (c2.y + 1 < grid.length && grid[c2.y + 1][c2.x] === 2) ||
-                    (c2.y - 1 >= 0 && grid[c2.y - 1][c2.x] === 2))
+                    (c2.y - 1 >= 0 && grid[c2.y - 1][c2.x] === 2)) {
                     this.loseScreenC = true;
+                    this.stopTimer();
+                }
             },
             checkWin() {
                 // check if the two characters are next to each other
@@ -199,6 +204,7 @@
                             Math.abs(this.character1.y - this.character2.y) === 1) ||
                         (this.character1.x - this.character2.x === 0 &&
                             this.character1.y - this.character2.y === 0))) return;
+                this.stopTimer();
                 this.winScreenC = true;
                 if (this.level > this.$localStorage.get('level'))
                     this.$localStorage.set('level', this.level);
@@ -217,7 +223,6 @@
                 }
             },
             port(character) {
-                console.log('hzz');
                 let grid = this.grid;
                 let rectSize = this.$store.state.rectSize;
                 breakpoint:
@@ -261,10 +266,28 @@
                 this.character2.x = this.levelData.char2Position.x;
                 this.character2.y = this.levelData.char2Position.y;
                 this.updateCharPositions(this.$store.state.rectSize);
+                // timer
+                if (this.levelData.timer) this.startTimer();
+            },
+            startTimer() {
+                this.timerTimeout = setTimeout(() => {
+                    this.loseScreenC = true;
+                }, 1000 * this.levelData.timer);
+                this.remainingTime = this.levelData.timer;
+                this.timerInterval = setInterval(() => {
+                    if (this.remainingTime === 0) clearInterval(this.timerInterval);
+                    else this.remainingTime--;
+                }, 1000);
+            },
+            stopTimer() {
+                clearTimeout(this.timerTimeout);
+                clearInterval(this.timerInterval);
+                this.remainingTime = -1;
             },
         },
         beforeMount() {
             this.level = this.initialLevel;
+            if (this.level >= levels.length) this.level = levels.length - 1;
             this.setLevel(this.level);
         },
         mounted() {
@@ -273,6 +296,9 @@
             document.addEventListener('keydown', function(event) {
                 self.processKeyPress(event.keyCode);
             });
+        },
+        destroyed() {
+            this.stopTimer();
         },
     };
 </script>

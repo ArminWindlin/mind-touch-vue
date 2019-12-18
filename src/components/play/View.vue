@@ -37,7 +37,7 @@
                 ctx.font = 'bold 18px Verdana';
                 ctx.textAlign = 'center';
 
-                ctx.fillText(this.fps + ' FPS', this.gameWidth - 80, 20);
+                // ctx.fillText(this.fps + ' FPS', this.gameWidth - 80, 20);
 
                 // get responsive rectangle size
                 this.rectSize = Math.floor(this.gameWidth / 14);

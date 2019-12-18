@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <menuu v-if="menuC" @play="play()" @levels="levelSelectionC = true, menuC = false"></menuu>
-    <level-selection v-if="levelSelectionC" @play="playLevel"></level-selection>
+    <level-selection v-if="levelSelectionC" @play="playLevel" @toMenu="menuC = true; levelSelectionC = false">
+    </level-selection>
     <game v-if="gameC" @toMenu="menuC = true; gameC = false" @toLevelScreen="levelSelectionC = true; gameC = false"
           :initialLevel="level"></game>
   </div>

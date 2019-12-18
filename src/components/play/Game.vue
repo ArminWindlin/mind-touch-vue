@@ -192,8 +192,10 @@
                     (c2.x - 1 >= 0 && grid[c2.y][c2.x - 1] === 2) ||
                     (c2.y + 1 < grid.length && grid[c2.y + 1][c2.x] === 2) ||
                     (c2.y - 1 >= 0 && grid[c2.y - 1][c2.x] === 2)) {
-                    this.loseScreenC = true;
-                    this.stopTimer();
+                    if (!this.winScreenC) {
+                        this.loseScreenC = true;
+                        this.stopTimer();
+                    }
                 }
             },
             checkWin() {

@@ -183,7 +183,7 @@
     margin: 3px;
     width: 44px;
     height: 44px;
-    background: url('../../assets/ArrowLeft.svg') no-repeat center center;
+    background: url('../../assets/arrowLeft.svg') no-repeat center center;
   }
 
   .arrow.arrow-left {

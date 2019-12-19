@@ -3,7 +3,7 @@
     <div class="main-button-container">
       <div class="menu-button-big play" @click="$emit('play')">PLAY</div>
       <div class="menu-button-big levels" @click="$emit('levels')">LEVELS</div>
-      <div class="menu-button-big update" @click="update()">UPDATE</div>
+      <!--<div class="menu-button-big update" @click="update()">UPDATE</div>-->
     </div>
   </div>
 </template>

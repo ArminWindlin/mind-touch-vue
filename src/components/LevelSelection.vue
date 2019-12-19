@@ -1,7 +1,7 @@
 <template>
     <div class="level-selection">
         <div class="levels-container">
-            <div class="level" v-for="level in levels" :key="level.index" @click="$emit('play', level.number)"
+            <div class="level" v-for="level in levels" :key="level.index" @click="levelClick(level.number)"
                  :class="[{'done': progress > level.number},{'current': progress === level.number}]">
                 {{level.number}}
             </div>
@@ -21,7 +21,10 @@
         data() {
             return {
                 levels: [],
-                progress: 1
+                progress: 1,
+                levelClick(number){
+                    if (number <= this.progress) this.$emit('play', number)
+                }
             };
         },
         methods: {},
